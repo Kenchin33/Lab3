@@ -9,10 +9,14 @@ import java.util.List;
 
 public class TripAddService {
 
+    private int tripIdCounter = 1; // Лічильник для генерування ID
+
+    // Додавання рейсу
     public void addTrip(Driver driver, Car car, Request request, List<Trip> trips) {
         if (driver != null && car != null && request != null && car.isWorkingCondition() && car.getType().equals(request.getCarType())) {
             Trip trip = new Trip();
-            trip.setTripId("Trip" + trips.size() + 1);
+            // Генерація ID для нового рейсу
+            trip.setTripId("TRIP" + tripIdCounter++);
             trip.setDriver(driver);
             trip.setCar(car);
             trip.setRequest(request);

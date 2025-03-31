@@ -6,8 +6,13 @@ import java.util.List;
 
 public class CarAddService {
 
+    private int carIdCounter = 1; // Лічильник для генерування ID
+
     // Додавання автомобіля
-    public void addCar(List<Car> cars, Car car) {
+    public void addCar(Car car, List<Car> cars) {
+        // Генерація ID для нового автомобіля
+        car.setCarId("CAR" + carIdCounter++);
         cars.add(car);
+        System.out.println("Автомобіль успішно додано!");
     }
 }
