@@ -39,4 +39,9 @@ public class TripService {
     public void updateTrip(String tripId, Trip newTripData) {
         tripUpdateService.updateTrip(tripId, newTripData, trips);
     }
+
+    // Список всіх рейсів
+    public List<Trip> getTrips() {
+        return trips;
+    }
 }
