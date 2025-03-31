@@ -3,6 +3,7 @@ package com.example.autobase.controller;
 import com.example.autobase.model.Car;
 import com.example.autobase.services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,19 +29,22 @@ public class CarController {
 
     // Додати новий автомобіль
     @PostMapping
-    public void addCar(@RequestBody Car car) {
+    public ResponseEntity<String> addCar(@RequestBody Car car) {
         carService.addCar(car);
+        return ResponseEntity.ok("Автомобіль успішно додано!");
     }
 
     // Оновити автомобіль
-    @PutMapping("/{carId}")
-    public void updateCar(@PathVariable String carId, @RequestBody Car updatedCar) {
+    @PatchMapping("/{carId}")
+    public ResponseEntity<String> updateCar(@PathVariable String carId, @RequestBody Car updatedCar) {
         carService.updateCar(carId, updatedCar);
+        return ResponseEntity.ok("Автомобіль оновлено!");
     }
 
     // Видалити автомобіль
     @DeleteMapping("/{carId}")
-    public void deleteCar(@PathVariable String carId) {
+    public ResponseEntity<String> deleteCar(@PathVariable String carId) {
         carService.deleteCar(carId);
+        return ResponseEntity.ok("Автомобіль успішно видалено!");
     }
 }

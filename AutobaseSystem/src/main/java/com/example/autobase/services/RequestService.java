@@ -1,16 +1,18 @@
 package com.example.autobase.services;
 
 import com.example.autobase.model.Request;
-
+import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RequestService {
 
     private RequestAddService requestAddService = new RequestAddService();
     private RequestSearchService requestFindService = new RequestSearchService();
     private RequestUpdateService requestUpdateService = new RequestUpdateService();
     private RequestDeleteService requestDeleteService = new RequestDeleteService();
-    private List<Request> requests;
+    private List<Request> requests = new ArrayList<>();
 
     // Додавання заявки
     public void addRequest(Request request) {
@@ -23,8 +25,8 @@ public class RequestService {
     }
 
     // Оновлення заявки
-    public void updateRequest(Request updatedRequest) {
-        requestUpdateService.updateRequest(updatedRequest, requests);
+    public void updateRequest(String requestId, Request updatedRequest) {
+        requestUpdateService.updateRequest(requestId, updatedRequest, requests);
     }
 
     // Видалення заявки
@@ -32,7 +34,7 @@ public class RequestService {
         requestDeleteService.deleteRequest(requestId, requests);
     }
 
-    // Список заявок
+    // Список всіх заявок
     public List<Request> getRequests() {
         return requests;
     }

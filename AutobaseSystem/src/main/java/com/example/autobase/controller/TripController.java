@@ -1,14 +1,17 @@
 package com.example.autobase.controller;
 
+import com.example.autobase.dto.TripCompletionRequest;
 import com.example.autobase.model.Trip;
 import com.example.autobase.services.TripService;
 import com.example.autobase.services.CarService;
 import com.example.autobase.services.DriverService;
 import com.example.autobase.services.RequestService;
+import com.example.autobase.services.TripCompletionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/trips")
@@ -22,6 +25,9 @@ public class TripController {
     private CarService carService;
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private TripCompletionService tripCompletionService;
 
     // Отримати список всіх рейсів
     @GetMapping
@@ -37,19 +43,40 @@ public class TripController {
 
     // Створити новий рейс
     @PostMapping
-    public void createTrip(@RequestParam String driverId, @RequestParam String carId, @RequestParam String requestId) {
-        tripService.createTrip(driverId, carId, requestId, driverService, carService, requestService);
+    public ResponseEntity<String> createTrip(@RequestBody Trip trip) {
+        String result = tripService.createTrip(
+            trip.getDriver().getDriverId(),
+            trip.getCar().getCarId(),
+            trip.getRequest().getRequestId(),
+            driverService, carService, requestService
+        );
+        return ResponseEntity.ok(result);
     }
 
     // Оновити рейс
-    @PutMapping("/{tripId}")
-    public void updateTrip(@PathVariable String tripId, @RequestBody Trip updatedTrip) {
+    @PatchMapping("/{tripId}")
+    public ResponseEntity<String> updateTrip(@PathVariable String tripId, @RequestBody Trip updatedTrip) {
         tripService.updateTrip(tripId, updatedTrip);
+        return ResponseEntity.ok("Рейс оновлено!");
     }
 
     // Видалити рейс
     @DeleteMapping("/{tripId}")
-    public void deleteTrip(@PathVariable String tripId) {
+    public ResponseEntity<String> deleteTrip(@PathVariable String tripId) {
         tripService.deleteTrip(tripId);
+        return ResponseEntity.ok("Рейс видалено!");
     }
+
+    // Водій ставить відмітку про виконання рейсу і стан автомобіля
+    @PatchMapping("/{tripId}/complete")
+    public ResponseEntity<String> completeTrip(@PathVariable String tripId, @RequestBody TripCompletionRequest request) {
+        boolean success = tripService.completeTrip(tripId, request.isWorkingCondition());
+        if (success) {
+            return ResponseEntity.ok("Рейс " + tripId + " виконано. Стан автомобіля оновлено.");
+        } else {
+            return ResponseEntity.badRequest().body("Помилка: Рейс не знайдено!");
+        }
+    }
+
+
 }
