@@ -32,4 +32,9 @@ public class CarService {
     public void deleteCar(String carId) {
         carDeleteService.deleteCar(cars, carId);
     }
+
+    // Список всіх автомобілів
+    public List<Car> getCars() {
+        return cars;
+    }
 }
