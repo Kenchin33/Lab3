@@ -15,7 +15,7 @@ public class CarService {
 
     // Додавання автомобіля
     public void addCar(Car car) {
-        carAddService.addCar(cars, car);
+         carAddService.addCar(car, cars);
     }
 
     // Пошук автомобіля за ID
