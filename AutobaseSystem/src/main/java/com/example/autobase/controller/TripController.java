@@ -1,12 +1,12 @@
 package com.example.autobase.controller;
 
 import com.example.autobase.dto.TripCompletionRequest;
+import com.example.autobase.dto.TripCreateRequest;
 import com.example.autobase.model.Trip;
 import com.example.autobase.services.TripService;
 import com.example.autobase.services.CarService;
 import com.example.autobase.services.DriverService;
 import com.example.autobase.services.RequestService;
-import com.example.autobase.services.TripCompletionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +26,6 @@ public class TripController {
     @Autowired
     private RequestService requestService;
 
-    @Autowired
-    private TripCompletionService tripCompletionService;
-
     // Отримати список всіх рейсів
     @GetMapping
     public List<Trip> getAllTrips() {
@@ -43,11 +40,11 @@ public class TripController {
 
     // Створити новий рейс
     @PostMapping
-    public ResponseEntity<String> createTrip(@RequestBody Trip trip) {
+    public ResponseEntity<String> createTrip(@RequestBody TripCreateRequest request) {
         String result = tripService.createTrip(
-            trip.getDriver().getDriverId(),
-            trip.getCar().getCarId(),
-            trip.getRequest().getRequestId(),
+            request.getDriverId(),
+            request.getCarId(),
+            request.getRequestId(),
             driverService, carService, requestService
         );
         return ResponseEntity.ok(result);
